@@ -19,3 +19,20 @@ Problems:
 How to read 2 inputs at the same time (2 keys cannot be pressed at the same time).
 How to implement a ship that can be modified over time (create a new class?).
 --------------------------------------------------------------------------------
+Log 3
+Implemented Resize method that scales game size with the window size.
+Successfully implemented rocket firing mechanism, reflecting, & acceleration.
+Implemented map reader and implementer (not compiling).
+Created block, map, rocket classes.
+
+Short Term Goals:
+Fix map reader and implementer bugs.
+Add test cases for methods after fixing map.
+Implement audio into game.
+Add system which prevents player from leaving ship.
+
+Long Term Goals:
+Add pictures and possibly animations to players & rockets.
+
+Problems:
+Still need to figure out how to read 2 inputs at the same time.

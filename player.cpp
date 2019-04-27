@@ -2,10 +2,12 @@
 #include <vector>;
 #include "ofApp.h";
 
-void player::SetPosition(int x, int y)
+void player::SetPosition(float x, float y)
 {
-	if (x > ofGetWindowWidth() - 10) {
-		x_pos = ofGetWindowWidth() - 10;
+	float block_width = ofGetWindowWidth() / 60;
+	float block_height = ofGetWindowHeight() / 35;
+	if (x > ofGetWindowWidth() - block_width) {
+		x_pos = ofGetWindowWidth() - block_width;
 	}
 	else if (x < 0) {
 		x_pos = 0;
@@ -13,8 +15,8 @@ void player::SetPosition(int x, int y)
 	else {
 		x_pos = x;
 	}
-	if (y > ofGetWindowHeight() - 10) {
-		y_pos = ofGetWindowHeight() - 10;
+	if (y > ofGetWindowHeight() - block_height) {
+		y_pos = ofGetWindowHeight() - block_height;
 	}
 	else if (y < 0) {
 		y_pos = 0;
@@ -24,28 +26,28 @@ void player::SetPosition(int x, int y)
 	}
 }
 
-void player::SetSize(int w, int h)
+void player::SetSize(float w, float h)
 {
 	width = w;
 	height = h;
 }
 
-int player::GetWidth()
+float player::GetWidth()
 {
 	return width;
 }
 
-int player::GetHeight()
+float player::GetHeight()
 {
 	return height;
 }
 
-int player::GetXPos()
+float player::GetXPos()
 {
 	return x_pos;
 }
 
-int player::GetYPos()
+float player::GetYPos()
 {
 	return y_pos;
 }
@@ -86,4 +88,14 @@ std::vector<int> player::GetColor()
 	colors.push_back(B);
 	colors.push_back(G);
 	return colors;
+}
+
+void player::SetId(int new_id)
+{
+	id = new_id;
+}
+
+int player::GetId()
+{
+	return id;
 }

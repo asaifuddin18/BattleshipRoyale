@@ -2,25 +2,28 @@
 #include <vector>
 class player {
 public:
-	void SetPosition(int x, int y);
-	void SetSize(int w, int h);
-	int GetWidth();
-	int GetHeight();
-	int GetXPos();
-	int GetYPos();
+	void SetPosition(float x, float y);
+	void SetSize(float w, float h);
+	float GetWidth();
+	float GetHeight();
+	float GetXPos();
+	float GetYPos();
 	int GetInventorySize();
 	void AddItem();
 	void RemoveItem();
 	void SetColor(std::string color);
 	std::vector<int> GetColor();
+	void SetId(int new_id);
+	int GetId();
 private:
 	int inventory = 0;
 	static const int kMaxInventorySize = 5;
-	int width;
-	int height;
-	int x_pos;
-	int y_pos;
+	float width;
+	float height;
+	float x_pos;
+	float y_pos;
 	int R;
 	int G;
 	int B;
+	int id;
 };
