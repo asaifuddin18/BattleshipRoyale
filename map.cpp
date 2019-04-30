@@ -12,11 +12,11 @@ Map::Map(std::string file_name)
 			char tile = current_line.at(i);
 			if (tile == 'B') {
 				//block* new_tile = new block(153, 102, 0, i, y);
-				map_array[i][y] = new block(153, 102, 0, i, y);
+				map_array[i][y] = new Block(153, 102, 0, i, y);
 			}
 			else {
-				block* new_tile;
-				map_array[i][y] = new block();
+				Block* new_tile;
+				map_array[i][y] = new Block();
 			}
 		}
 		y++;
@@ -24,7 +24,7 @@ Map::Map(std::string file_name)
 }
 
 
-std::array<std::array<block*, 35>, 60> Map::GetMap()
+std::array<std::array<Block*, 35>, 60> Map::GetMap()
 {
 	return map_array;
 }

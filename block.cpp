@@ -1,7 +1,7 @@
 #pragma once
 #include "block.h"
 #include "ofAppRunner.h"
-std::vector<int> block::GetColor()
+std::vector<int> Block::GetColor()
 {
 	std::vector<int> colors;
 	colors.push_back(red);
@@ -10,23 +10,45 @@ std::vector<int> block::GetColor()
 	return colors;
 
 }
-
-block::block(int R, int G, int B, float x_pos, float y_pos)
+/*
+R = 0-256
+G = 0-256
+B = 0-256
+x_pos = 0-60
+y_pos = 0-35
+*/
+Block::Block(int R, int G, int B, float x_pos, float y_pos)
 {
 	red = R;
 	green = G;
 	blue = B;
-	array_x = x_pos;
-	array_y = y_pos;
+	if (x_pos > 60) {
+		array_x = 60;
+	}
+	else if (x_pos < 0) {
+		array_x = 0;
+	}
+	else {
+		array_x = x_pos;
+	}
+	if (y_pos > 35) {
+		array_y = 35;
+	}
+	else if (y_pos < 0) {
+		array_y = 0;
+	}
+	else {
+		array_y = y_pos;
+	}
 	Resize();
 	empty = false;
 }
 
-block::block()
+Block::Block()
 {
 }
 
-void block::Resize()
+void Block::Resize()
 {
 	x = (array_x) * (ofGetWindowWidth() / 60);
 	y = (array_y) * (ofGetWindowHeight() / 35);
@@ -35,37 +57,37 @@ void block::Resize()
 	rect = ofRectangle(x, y, width, height);
 }
 
-int block::GetWidth()
+int Block::GetWidth()
 {
 	return width;
 }
 
-int block::GetHeight()
+int Block::GetHeight()
 {
 	return height;
 }
 
-int block::GetX()
+int Block::GetX()
 {
 	return x;
 }
 
-int block::GetY()
+int Block::GetY()
 {
 	return y;
 }
 
-ofRectangle block::GetRectangle()
+ofRectangle Block::GetRectangle()
 {
 	return rect;
 }
 
-bool block::IsEmpty()
+bool Block::IsEmpty()
 {
 	return empty;
 }
 
-void block::SetEmpty()
+void Block::SetEmpty()
 {
 	empty = true;
 }

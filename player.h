@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "block.h"
 class player {
 public:
 	void SetPosition(float x, float y);

@@ -7,8 +7,7 @@
 class Map {
 public:
 	Map(std::string file_name);
-	std::array<std::array<block*, 35>, 60> GetMap();
+	std::array<std::array<Block*, 35>, 60> GetMap();
 private:
-	std::array<std::array<block*, 35>, 60> map_array;
-	std::vector<block> cat;
+	std::array<std::array<Block*, 35>, 60> map_array;
 };

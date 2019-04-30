@@ -1,11 +1,11 @@
 #pragma once
 #include "ofGraphics.h"
 #include <vector>
-class block {
+class Block {
 public:
 	std::vector<int> GetColor();
-	block(int R, int G, int B, float x, float y);
-	block();
+	Block(int R, int G, int B, float x, float y);
+	Block();
 	void Resize();
 	int GetWidth();
 	int GetHeight();
