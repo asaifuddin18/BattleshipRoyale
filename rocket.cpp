@@ -7,19 +7,22 @@ rocket::rocket(player player)
 	height = player.GetHeight();
 	x_pos = player.GetXPos();
 	y_pos = player.GetYPos();
-	velocity = 0;
-	acceleration = height / 20;
+	velocity = player.GetHeight() / 2;
+	//acceleration = height / 20;
+	acceleration = 0;
+	//acceleration disabled
 	if (player.GetId() == 1) {
 		y_pos += height;
-		acceleration = height / 20;
+		//acceleration = height / 20;
 	}
 	else {
 		y_pos -= height;
-		acceleration = -(height / 20);
+		//acceleration = -(height / 20);
 	}
 	red = player.GetColor()[0] / 2;
 	green = player.GetColor()[1] / 2;
 	blue = player.GetColor()[2] / 2;
+	rect = ofRectangle(x_pos, y_pos, width, height);
 
 }
 
@@ -75,6 +78,8 @@ void rocket::Update()
 {
 	SpeedUp();
 	UpdatePosition();
+	//std::cout << "X " << x_pos << " Y " << y_pos << std::endl;
+	rect = ofRectangle(x_pos, y_pos, width, height);
 }
 
 float rocket::GetWidth()
@@ -96,6 +101,11 @@ void rocket::Reflect()
 {
 	velocity = -velocity;
 	acceleration = -acceleration;
+}
+
+ofRectangle rocket::GetRectangle()
+{
+	return rect;
 }
 
 void rocket::SpeedUp()

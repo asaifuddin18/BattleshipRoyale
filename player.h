@@ -15,6 +15,7 @@ public:
 	std::vector<int> GetColor();
 	void SetId(int new_id);
 	int GetId();
+	void UpdatePlayer();
 private:
 	int inventory = 0;
 	static const int kMaxInventorySize = 5;

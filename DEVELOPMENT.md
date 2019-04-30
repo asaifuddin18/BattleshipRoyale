@@ -36,3 +36,6 @@ Add pictures and possibly animations to players & rockets.
 
 Problems:
 Still need to figure out how to read 2 inputs at the same time.
+-------------------------------------------------------------------------------------
+Log 4
+Fixed Map Loader.

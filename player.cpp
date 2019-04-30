@@ -99,3 +99,13 @@ int player::GetId()
 {
 	return id;
 }
+
+void player::UpdatePlayer()
+{
+	float temp_width = ofGetWindowWidth() / 60;
+	float temp_height = ofGetWindowHeight() / 35;
+	x_pos = (x_pos / width) * temp_width;
+	y_pos = (y_pos / height) * temp_height;
+	width = temp_width;
+	height = temp_height;
+}

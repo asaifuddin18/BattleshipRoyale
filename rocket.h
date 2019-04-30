@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "player.h"
+#include "ofGraphics.h"
 class rocket {
 public:
 	rocket(player player);
@@ -17,7 +18,9 @@ public:
 	float GetHeight();
 	float GetVelocity();
 	void Reflect();
+	ofRectangle GetRectangle();
 private:
+	ofRectangle rect;
 	float width;
 	float height;
 	float velocity;

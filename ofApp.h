@@ -25,6 +25,9 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 private:
+	bool first_move = false;
+	bool player2_won = false;
+	bool player1_won = false;
 	Map* map;
 	player player1;
 	player player2;
@@ -35,4 +38,9 @@ private:
 	void DrawRockets();
 	void DrawMap();
 	std::vector<rocket*> active_rockets;
+	void ResizeMap();
+	bool CheckIfInShip(ofRectangle player);
+	void CheckForRocketCollision();
+	void CheckForWinner();
+	void DrawWinningText();
 };
