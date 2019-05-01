@@ -4,6 +4,7 @@
 #include <array>
 #include <fstream>
 #include <vector>
+#include <map>
 class Map {
 public:
 	Map(std::string file_name);

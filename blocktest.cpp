@@ -92,11 +92,11 @@ TEST_CASE("X and Y") {
 	SECTION("X") {
 		SECTION("Get X") {
 			Block *block = new Block(100, 100, 100, 20, 0);
-			REQUIRE(block->GetX() == 60);
+			REQUIRE(block->GetX() == 20);
 		}
 		SECTION("X Above 60") {
 			Block *block = new Block(100, 100, 100, 80, 0);
-			REQUIRE(block->GetX() == ofGetWindowWidth());
+			REQUIRE(block->GetX() == 60);
 		}
 		SECTION("X Below 0") {
 			Block *block = new Block(100, 100, 100, -100, 0);
@@ -106,11 +106,11 @@ TEST_CASE("X and Y") {
 	SECTION("Y") {
 		SECTION("Get Y") {
 			Block *block = new Block(100, 100, 100, 0, 20);
-			REQUIRE(block->GetY() == 60);
+			REQUIRE(block->GetY() == 20);
 		}
 		SECTION("Y Above 35") {
 			Block *block = new Block(100, 100, 100, 0, 50);
-			REQUIRE(block->GetY() == ofGetWindowHeight());
+			REQUIRE(block->GetY() == 35);
 		}
 		SECTION("Y Below 0") {
 			Block *block = new Block(100, 100, 100, 0, -100);
@@ -119,7 +119,7 @@ TEST_CASE("X and Y") {
 	}
 	SECTION("Get X and Y") {
 		Block *block = new Block(100, 100, 100, 40, 5);
-		bool x_and_y = 120 == block->GetX() && 15 == block->GetY();
+		bool x_and_y = 40 == block->GetX() && 5 == block->GetY();
 		REQUIRE(x_and_y);
 	}
 }

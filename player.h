@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include "block.h"
-class player {
+class Player {
 public:
-	player(float x, float y, int set_id, int R, int G, int B);
+	Player(float x, float y, int set_id, int R, int G, int B);
 	void SetPosition(float x, float y);
 	float GetWidth();
 	float GetHeight();
@@ -25,8 +25,8 @@ private:
 	float height;
 	float x_pos;
 	float y_pos;
-	int R;
-	int G;
-	int B;
+	int red;
+	int green;
+	int blue;
 	int id;
 };

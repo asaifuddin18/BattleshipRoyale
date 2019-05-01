@@ -2,78 +2,78 @@
 #include <vector>;
 #include "ofApp.h";
 
-player::player(float x, float y, int set_id, int R, int G, int B)
+Player::Player(float x, float y, int set_id, int R, int G, int B)
 {
 	player_block = new Block(R, G, B, x, y);
 	id = set_id;
+	red = R;
+	green = G;
+	blue = B;
 
 }
 
-void player::SetPosition(float x, float y) //keep updating player class
+void Player::SetPosition(float x, float y) //keep updating player class
 {
 	player_block->Reposition(x, y);
 }
 
-float player::GetWidth()
+float Player::GetWidth()
 {
 	return player_block->GetWidth();
 }
 
-float player::GetHeight()
+float Player::GetHeight()
 {
 	return player_block->GetHeight();
 }
 
-float player::GetXPos()
+float Player::GetXPos()
 {
 	return player_block->GetX();
 }
 
-float player::GetYPos()
+float Player::GetYPos()
 {
 	return player_block->GetY();
 }
 
-int player::GetInventorySize()
+int Player::GetInventorySize()
 {
 	return inventory;
 }
 
-void player::AddItem()
+void Player::AddItem()
 {
 	inventory++;
 }
 
-void player::RemoveItem()
+void Player::RemoveItem()
 {
 	inventory--;
 }
 
-std::vector<int> player::GetColor()
+std::vector<int> Player::GetColor()
 {
-	std::vector<int> colors;
-	colors.push_back(R);
-	colors.push_back(B);
-	colors.push_back(G);
+	std::vector<int> colors = { red, green, blue };
 	return colors;
 }
 
-void player::SetId(int new_id)
+void Player::SetId(int new_id)
 {
 	id = new_id;
 }
 
-int player::GetId()
+int Player::GetId()
 {
 	return id;
 }
 
-void player::UpdatePlayer()
+void Player::UpdatePlayer()
 {
 	player_block->Resize();
 }
 
-Block * player::GetPlayerBlock()
+Block * Player::GetPlayerBlock()
 {
 	return player_block;
 }

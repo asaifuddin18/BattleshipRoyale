@@ -2,12 +2,11 @@
 #include <vector>
 #include "player.h"
 #include "ofGraphics.h"
-class rocket {
+class Rocket {
 public:
-	rocket(player* player);
+	Rocket(Player* player);
 	void SetSize(float w, float h);
 	void SetVelocity(float v);
-	void SetAcceleration(float a);
 	void SetPosition(float x, float y);
 	float GetX();
 	float GetY();
@@ -17,21 +16,16 @@ public:
 	float GetWidth();
 	float GetHeight();
 	float GetVelocity();
-	void Reflect();
-	ofRectangle GetRectangle();
 	Block* GetBlock();
 private:
 	Block* rocket_block;
-	ofRectangle rect;
 	float width;
 	float height;
 	float velocity;
-	float acceleration;
 	float x_pos;
 	float y_pos;
 	int red;
 	int green;
 	int blue;
-	void SpeedUp();
 	void UpdatePosition();
 };

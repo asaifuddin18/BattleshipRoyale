@@ -22,25 +22,7 @@ Block::Block(int R, int G, int B, float x_pos, float y_pos)
 	red = R;
 	green = G;
 	blue = B;
-	if (x_pos > 60) {
-		array_x = 60;
-	}
-	else if (x_pos < 0) {
-		array_x = 0;
-	}
-	else {
-		array_x = x_pos;
-	}
-	if (y_pos > 35) {
-		array_y = 35;
-	}
-	else if (y_pos < 0) {
-		array_y = 0;
-	}
-	else {
-		array_y = y_pos;
-	}
-	Resize();
+	Reposition(x_pos, y_pos);
 	empty = false;
 }
 
@@ -50,11 +32,11 @@ Block::Block()
 
 void Block::Resize()
 {
-	x = (array_x) * (ofGetWindowWidth() / 60);
-	y = (array_y) * (ofGetWindowHeight() / 35);
+	int rect_x = (x) * (ofGetWindowWidth() / 60);
+	int rect_y = (y) * (ofGetWindowHeight() / 35);
 	width = ofGetWindowWidth() / 60;
 	height = ofGetWindowHeight() / 35;
-	rect = ofRectangle(x, y, width, height);
+	rect = ofRectangle(rect_x, rect_y, width, height);
 }
 
 int Block::GetWidth()
@@ -94,17 +76,23 @@ void Block::SetEmpty()
 
 void Block::Reposition(int set_x, int set_y)
 {
-	array_x = set_x;
-	array_y = set_y;
+	if (set_x > 60) {
+		x = 60;
+	}
+	else if (set_x < 0) {
+		x = 0;
+	}
+	else {
+		x = set_x;
+	}
+	if (set_y > 35) {
+		y = 35;
+	}
+	else if (set_y < 0) {
+		y = 0;
+	}
+	else {
+		y = set_y;
+	}
 	Resize();
-}
-
-int Block::GetXArray()
-{
-	return array_x;
-}
-
-int Block::GetYArray()
-{
-	return array_y;
 }

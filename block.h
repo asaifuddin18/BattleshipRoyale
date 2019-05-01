@@ -9,14 +9,12 @@ public:
 	void Resize();
 	int GetWidth();
 	int GetHeight();
-	int GetX();
-	int GetY();
 	ofRectangle GetRectangle();
 	bool IsEmpty();
 	void SetEmpty();
 	void Reposition(int set_x, int set_y);
-	int GetXArray();
-	int GetYArray();
+	int GetX();
+	int GetY();
 private:
 	ofRectangle rect;
 	int height;
@@ -26,8 +24,6 @@ private:
 	int blue;
 	int x;
 	int y;
-	int array_x;
-	int array_y;
 	bool empty = true;
 
 };

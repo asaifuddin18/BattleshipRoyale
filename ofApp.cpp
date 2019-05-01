@@ -3,8 +3,8 @@
 #include<vector>
 //--------------------------------------------------------------
 void ofApp::setup(){
-	player1 = new player(30, 0, 1, 255, 0, 0);
-	player2 = new player(30, 33, 2, 0, 255, 0);
+	player1 = new Player(30, 0, 1, 255, 0, 0);
+	player2 = new Player(30, 33, 2, 0, 255, 0);
 	ofSetBackgroundColor(0, 102, 204);
 	map = new Map("shipbattle.txt");
 }
@@ -33,10 +33,10 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 	first_move = true;
-	int player1_x = player1->GetPlayerBlock()->GetXArray();
-	int player1_y = player1->GetPlayerBlock()->GetYArray();
-	int player2_x = player2->GetPlayerBlock()->GetXArray();
-	int player2_y = player2->GetPlayerBlock()->GetYArray();
+	int player1_x = player1->GetPlayerBlock()->GetX();
+	int player1_y = player1->GetPlayerBlock()->GetY();
+	int player2_x = player2->GetPlayerBlock()->GetX();
+	int player2_y = player2->GetPlayerBlock()->GetY();
 	ofRectangle temp_player;
 	switch (key) {
 	case 57357: //up arrow
@@ -64,7 +64,7 @@ void ofApp::keyPressed(int key){
 		}
 		break;
 	case 13: //enter key
-		rocket* new_rocket = new rocket(player2);
+		Rocket* new_rocket = new Rocket(player2);
 		active_rockets.push_back(new_rocket);
 	}
 	char letter =  toupper(key);
@@ -94,7 +94,7 @@ void ofApp::keyPressed(int key){
 		}
 		break;
 	case 'F':
-		rocket* new_rocket = new rocket(player1);
+		Rocket* new_rocket = new Rocket(player1);
 		active_rockets.push_back(new_rocket);
 	}
 }
@@ -139,7 +139,7 @@ void ofApp::windowResized(int w, int h){
 	ResizeMap();
 	player1->UpdatePlayer();
 	player2->UpdatePlayer();
-	for (rocket* current : active_rockets) {
+	for (Rocket* current : active_rockets) {
 		current->SetSize(w / 60, h / 35);
 	}
 }
@@ -168,7 +168,7 @@ void ofApp::DrawPlayer2()
 void ofApp::DrawRockets()
 {
 	for (int i = 0; i < active_rockets.size(); i++) {
-		rocket* rocket = active_rockets[i];
+		Rocket* rocket = active_rockets[i];
 		if (rocket->GetY() < 0 || rocket->GetY() > 35) {
 			active_rockets.erase(active_rockets.begin() + i);
 			delete rocket;
@@ -207,11 +207,11 @@ void ofApp::ResizeMap()
 	}
 }
 
-bool ofApp::CheckIfInShip(player* player)
+bool ofApp::CheckIfInShip(Player* player)
 {
 	for (int i = 0; i < map->GetMap().size(); i++) {
 		for (int j = 0; j < map->GetMap()[0].size(); j++)
-			if (!map->GetMap()[i][j]->IsEmpty() && player->GetPlayerBlock()->GetXArray() == i && player->GetPlayerBlock()->GetYArray() == j) {
+			if (!map->GetMap()[i][j]->IsEmpty() && player->GetPlayerBlock()->GetX() == i && player->GetPlayerBlock()->GetY() == j) {
 				return true;
 			}
 	}
@@ -224,7 +224,7 @@ void ofApp::CheckForRocketCollision()
 		return;
 	}
 	for (int i = 0; i < active_rockets.size(); i++) {
-		rocket* current = active_rockets.at(i);
+		Rocket* current = active_rockets.at(i);
 		int rocket_x = current->GetX();
 		int rocket_y = current->GetY();
 		for (int j = 0; j < map->GetMap().size(); j++) {
@@ -245,10 +245,10 @@ void ofApp::CheckForWinner()
 {
 	bool player1_on_ship = false;
 	bool player2_on_ship = false;
-	int x1 = player1->GetPlayerBlock()->GetXArray();
-	int y1 = player1->GetPlayerBlock()->GetYArray();
-	int x2 = player2->GetPlayerBlock()->GetXArray();
-	int y2 = player2->GetPlayerBlock()->GetYArray();
+	int x1 = player1->GetPlayerBlock()->GetX();
+	int y1 = player1->GetPlayerBlock()->GetY();
+	int x2 = player2->GetPlayerBlock()->GetX();
+	int y2 = player2->GetPlayerBlock()->GetY();
 	for (int i = 0; i < map->GetMap().size(); i++) {
 		for (int j = 0; j < map->GetMap()[0].size(); j++) {
 			if (!player1_on_ship && !map->GetMap()[i][j]->IsEmpty() && x1 == i && y1 == j) {
