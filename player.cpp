@@ -12,7 +12,7 @@ Player::Player(float x, float y, int set_id, int R, int G, int B)
 
 }
 
-void Player::SetPosition(float x, float y) //keep updating player class
+void Player::SetPosition(float x, float y)
 {
 	player_block->Reposition(x, y);
 }
@@ -45,6 +45,9 @@ int Player::GetInventorySize()
 void Player::AddItem()
 {
 	inventory++;
+	if (inventory > kMaxInventorySize) {
+		inventory = kMaxInventorySize;
+	}
 }
 
 void Player::RemoveItem()

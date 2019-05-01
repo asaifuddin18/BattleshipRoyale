@@ -36,9 +36,13 @@ private:
 	void DrawRockets();
 	void DrawMap();
 	std::vector<Rocket*> active_rockets;
+	std::vector<Block*> ammo;
 	void ResizeMap();
 	bool CheckIfInShip(Player* player);
 	void CheckForRocketCollision();
 	void CheckForWinner();
 	void DrawWinningText();
+	void GenerateAmmo();
+	void CheckForAmmoPickUp();
+	void DrawAmmo();
 };

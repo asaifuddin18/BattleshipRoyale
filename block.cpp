@@ -3,10 +3,7 @@
 #include "ofAppRunner.h"
 std::vector<int> Block::GetColor()
 {
-	std::vector<int> colors;
-	colors.push_back(red);
-	colors.push_back(green);
-	colors.push_back(blue);
+	std::vector<int> colors = { red, green, blue };
 	return colors;
 
 }

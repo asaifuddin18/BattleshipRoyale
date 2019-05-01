@@ -2,7 +2,7 @@
 #include "ofApp.h"
 
 //========================================================================
-/*int main( ){
+int main( ){
 	ofSetupOpenGL(1371,800,OF_WINDOW);			// <-------- setup the GL context
 
 	// this kicks off the running of my app
@@ -11,4 +11,4 @@
 	ofRunApp(new ofApp());
 	ofSetFrameRate(15);
 
-}*/
+}

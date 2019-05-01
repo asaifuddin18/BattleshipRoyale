@@ -11,7 +11,9 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	GenerateAmmo();
 	CheckForRocketCollision();
+	CheckForAmmoPickUp();
 	//if (first_move) {
 		//CheckForWinner();
 	//}
@@ -25,6 +27,7 @@ void ofApp::draw(){
 		return;
 	}
 	DrawMap();
+	DrawAmmo();
 	DrawPlayer1();
 	DrawPlayer2();
 	DrawRockets();
@@ -64,8 +67,11 @@ void ofApp::keyPressed(int key){
 		}
 		break;
 	case 13: //enter key
-		Rocket* new_rocket = new Rocket(player2);
-		active_rockets.push_back(new_rocket);
+		if (player2->GetInventorySize() > 0) {
+			Rocket* new_rocket = new Rocket(player2);
+			active_rockets.push_back(new_rocket);
+			player2->RemoveItem();
+		}
 	}
 	char letter =  toupper(key);
 	switch (letter) {
@@ -94,8 +100,11 @@ void ofApp::keyPressed(int key){
 		}
 		break;
 	case 'F':
-		Rocket* new_rocket = new Rocket(player1);
-		active_rockets.push_back(new_rocket);
+		if (player1->GetInventorySize() > 0) {
+			Rocket* new_rocket = new Rocket(player1);
+			active_rockets.push_back(new_rocket);
+			player1->RemoveItem();
+		}
 	}
 }
 
@@ -276,6 +285,46 @@ void ofApp::DrawWinningText()
 	}
 	else if (player2_won) {
 		ofDrawBitmapString("Player 2 Won!", 100, 100);
+	}
+}
+
+void ofApp::GenerateAmmo()
+{
+	int odds = rand() % 15;
+	int ammo_x = rand() % 60;
+	int ammo_y = rand() % 35;
+	if (odds == 4 && !map->GetMap()[ammo_x][ammo_y]->IsEmpty()) {
+		Block *new_ammo = new Block(0, 0, 0, ammo_x, ammo_y);
+		ammo.push_back(new_ammo);
+	}
+
+}
+
+void ofApp::CheckForAmmoPickUp()
+{
+	for (int i = 0; i < ammo.size(); i++) {
+		Block* current = ammo[i];
+		int ammo_x = current->GetX();
+		int ammo_y = current->GetY();
+		if (player1->GetXPos() == ammo_x && player1->GetYPos() == ammo_y) {
+			player1->AddItem();
+			ammo.erase(ammo.begin() + i);
+			delete current;
+		}
+		else if (player2->GetXPos() == ammo_x && player2->GetYPos() == ammo_y) {
+			player2->AddItem();
+			ammo.erase(ammo.begin() + i);
+			delete current;
+		}
+	}
+}
+
+void ofApp::DrawAmmo()
+{
+	for (Block* current : ammo) {
+		std::vector<int> colors = current->GetColor();
+		ofSetColor(colors[0], colors[1], colors[2]);
+		ofDrawRectangle(current->GetRectangle());
 	}
 }
 
