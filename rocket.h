@@ -4,7 +4,7 @@
 #include "ofGraphics.h"
 class rocket {
 public:
-	rocket(player player);
+	rocket(player* player);
 	void SetSize(float w, float h);
 	void SetVelocity(float v);
 	void SetAcceleration(float a);
@@ -19,7 +19,9 @@ public:
 	float GetVelocity();
 	void Reflect();
 	ofRectangle GetRectangle();
+	Block* GetBlock();
 private:
+	Block* rocket_block;
 	ofRectangle rect;
 	float width;
 	float height;

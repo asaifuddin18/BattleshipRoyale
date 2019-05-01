@@ -3,26 +3,19 @@
 #include<vector>
 //--------------------------------------------------------------
 void ofApp::setup(){
-	float block_width = ofGetWindowWidth() / 60;
-	float block_height = ofGetWindowHeight() / 35;
+	player1 = new player(30, 0, 1, 255, 0, 0);
+	player2 = new player(30, 33, 2, 0, 255, 0);
 	ofSetBackgroundColor(0, 102, 204);
-	player1.SetPosition(ofGetWindowWidth()/2, 0);
-	player2.SetPosition(ofGetWindowWidth() / 2, ofGetWindowHeight() - 2*block_height);
-	player1.SetSize(block_width, block_height);
-	player2.SetSize(block_width, block_height);
-	player1.SetId(1);
-	player2.SetId(2);
-	player1.SetColor("RED");
-	player2.SetColor("BLUE");
 	map = new Map("shipbattle.txt");
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 	CheckForRocketCollision();
-	if (first_move) {
-		CheckForWinner();
-	}
+	//if (first_move) {
+		//CheckForWinner();
+	//}
+	CheckForWinner();
 }
 
 //--------------------------------------------------------------
@@ -40,34 +33,34 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 	first_move = true;
-	int player1_x = player1.GetXPos();
-	int player1_y = player1.GetYPos();
-	int player2_x = player2.GetXPos();
-	int player2_y = player2.GetYPos();
+	int player1_x = player1->GetPlayerBlock()->GetXArray();
+	int player1_y = player1->GetPlayerBlock()->GetYArray();
+	int player2_x = player2->GetPlayerBlock()->GetXArray();
+	int player2_y = player2->GetPlayerBlock()->GetYArray();
 	ofRectangle temp_player;
 	switch (key) {
 	case 57357: //up arrow
-		temp_player = ofRectangle(player2_x, player2_y - player2.GetHeight(), player2.GetWidth(), player2.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player2.SetPosition(player2_x, player2_y - player2.GetHeight());
+		player2->SetPosition(player2_x, player2_y - 1);
+		if (!CheckIfInShip(player2)) {
+			player2->SetPosition(player2_x, player2_y);
 		}
 		break;
 	case 57356: //left arrow
-		temp_player = ofRectangle(player2_x - player2.GetWidth(), player2_y, player2.GetWidth(), player2.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player2.SetPosition(player2_x - player2.GetWidth(), player2_y);
+		player2->SetPosition(player2_x - 1, player2_y);
+		if (!CheckIfInShip(player2)) {
+			player2->SetPosition(player2_x, player2_y);
 		}
 		break;
 	case 57359: //down arrow
-		temp_player = ofRectangle(player2_x, player2_y + player2.GetHeight(), player2.GetWidth(), player2.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player2.SetPosition(player2_x, player2_y + player2.GetHeight());
+		player2->SetPosition(player2_x, player2_y + 1);
+		if (!CheckIfInShip(player2)) {
+			player2->SetPosition(player2_x, player2_y);
 		}
 		break;
 	case 57358: //right arrow
-		temp_player = ofRectangle(player2_x + player2.GetWidth(), player2_y, player2.GetWidth(), player2.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player2.SetPosition(player2_x + player2.GetWidth(), player2_y);
+		player2->SetPosition(player2_x + 1, player2_y);
+		if (!CheckIfInShip(player2)) {
+			player2->SetPosition(player2_x, player2_y);
 		}
 		break;
 	case 13: //enter key
@@ -77,27 +70,27 @@ void ofApp::keyPressed(int key){
 	char letter =  toupper(key);
 	switch (letter) {
 	case 'W':
-		temp_player = ofRectangle(player1_x, player1_y - player1.GetHeight(), player1.GetWidth(), player1.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player1.SetPosition(player1_x, player1_y - player1.GetHeight());
+		player1->SetPosition(player1_x, player1_y - 1);
+		if (!CheckIfInShip(player1)) {
+			player1->SetPosition(player1_x, player1_y);
 		}
 		break;
 	case 'A':
-		temp_player = ofRectangle(player1_x - player1.GetWidth(), player1_y, player1.GetWidth(), player1.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player1.SetPosition(player1_x - player1.GetWidth(), player1_y);
+		player1->SetPosition(player1_x - 1, player1_y);
+		if (!CheckIfInShip(player1)) {
+			player1->SetPosition(player1_x, player1_y);
 		}
 		break;
 	case 'S':
-		temp_player = ofRectangle(player1_x, player1_y + player1.GetHeight(), player1.GetWidth(), player1.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player1.SetPosition(player1_x, player1_y + player1.GetHeight());
+		player1->SetPosition(player1_x, player1_y + 1);
+		if (!CheckIfInShip(player1)) {
+			player1->SetPosition(player1_x, player1_y);
 		}
 		break;
 	case 'D':
-		temp_player = ofRectangle(player1_x + player2.GetWidth(), player1_y, player1.GetWidth(), player1.GetHeight());
-		if (CheckIfInShip(temp_player)) {
-			player1.SetPosition(player1_x + player1.GetWidth(), player1_y);
+		player1->SetPosition(player1_x + 1, player1_y);
+		if (!CheckIfInShip(player1)) {
+			player1->SetPosition(player1_x, player1_y);
 		}
 		break;
 	case 'F':
@@ -144,8 +137,8 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
 	ResizeMap();
-	player1.UpdatePlayer();
-	player2.UpdatePlayer();
+	player1->UpdatePlayer();
+	player2->UpdatePlayer();
 	for (rocket* current : active_rockets) {
 		current->SetSize(w / 60, h / 35);
 	}
@@ -158,39 +151,32 @@ void ofApp::gotMessage(ofMessage msg){
 
 void ofApp::DrawPlayer1()
 {
-	//std::vector<int> colors = player1.GetColor();
-	ofSetColor(player1.GetColor()[0], player1.GetColor()[1], player1.GetColor()[2]);
+	std::vector<int> colors = player1->GetPlayerBlock()->GetColor();
+	ofSetColor(colors[0], colors[1], colors[2]);
 	ofFill();
-	player1_rect = ofRectangle(player1.GetXPos(), player1.GetYPos(), player1.GetWidth(), player1.GetHeight());
-	ofDrawRectangle(player1_rect);
+	ofDrawRectangle(player1->GetPlayerBlock()->GetRectangle());
 }
 
 void ofApp::DrawPlayer2()
 {
-	//std::vector<int> colors = player2.GetColor();
-	ofSetColor(player2.GetColor()[0], player2.GetColor()[1], player2.GetColor()[2]);
+	std::vector<int> colors = player2->GetPlayerBlock()->GetColor();
+	ofSetColor(colors[0], colors[1], colors[2]);
 	ofFill();
-	player2_rect = ofRectangle(player2.GetXPos(), player2.GetYPos(), player2.GetWidth(), player2.GetHeight());
-	ofDrawRectangle(player2_rect);
+	ofDrawRectangle(player2->GetPlayerBlock()->GetRectangle());
 }
 
 void ofApp::DrawRockets()
 {
 	for (int i = 0; i < active_rockets.size(); i++) {
 		rocket* rocket = active_rockets[i];
-		if (rocket->GetY() < 0 || rocket->GetY() > ofGetWindowHeight()) {
+		if (rocket->GetY() < 0 || rocket->GetY() > 35) {
 			active_rockets.erase(active_rockets.begin() + i);
 			delete rocket;
 			continue;
 		}
-		ofSetColor(rocket->GetColor()[0], rocket->GetColor()[1], rocket->GetColor()[2]);
+		ofSetColor(0, 0, 255);
 		ofFill();
-		ofRectangle rocket_rect(rocket->GetX(), rocket->GetY(), rocket->GetWidth(), rocket->GetHeight());
-		//ofDrawRectangle(rocket->GetX(), rocket->GetY(), rocket->GetWidth(), rocket->GetHeight());
-		if (rocket_rect.intersects(player1_rect) || rocket_rect.intersects(player2_rect)) {
-			rocket->Reflect();
-		}
-		ofDrawRectangle(rocket_rect);
+		ofDrawRectangle(rocket->GetBlock()->GetRectangle());
 		rocket->Update();
 	}
 }
@@ -221,11 +207,11 @@ void ofApp::ResizeMap()
 	}
 }
 
-bool ofApp::CheckIfInShip(ofRectangle player)
+bool ofApp::CheckIfInShip(player* player)
 {
 	for (int i = 0; i < map->GetMap().size(); i++) {
-		for (int j = 0; j < map->GetMap()[0].size(); j++)	
-			if (!map->GetMap()[i][j]->IsEmpty() && map->GetMap()[i][j]->GetRectangle().intersects(player)) {
+		for (int j = 0; j < map->GetMap()[0].size(); j++)
+			if (!map->GetMap()[i][j]->IsEmpty() && player->GetPlayerBlock()->GetXArray() == i && player->GetPlayerBlock()->GetYArray() == j) {
 				return true;
 			}
 	}
@@ -237,16 +223,17 @@ void ofApp::CheckForRocketCollision()
 	if (active_rockets.size() == 0) {
 		return;
 	}
-	for (int k = 0; k < active_rockets.size(); k++) {
-		rocket* current = active_rockets[k];
-		for (int i = 0; i < map->GetMap().size(); i++) {
-			for (int j = 0; j < map->GetMap()[0].size(); j++) {
-				if (current->GetRectangle().intersects(map->GetMap()[i][j]->GetRectangle()) && !map->GetMap()[i][j]->IsEmpty()) {
-					int size = active_rockets.size();
-					map->GetMap()[i][j]->SetEmpty();
-					active_rockets.erase(active_rockets.begin() + k);
-					i = map->GetMap().size();
-					j = map->GetMap()[0].size();
+	for (int i = 0; i < active_rockets.size(); i++) {
+		rocket* current = active_rockets.at(i);
+		int rocket_x = current->GetX();
+		int rocket_y = current->GetY();
+		for (int j = 0; j < map->GetMap().size(); j++) {
+			for (int k = 0; k < map->GetMap().size(); k++) {
+				if (rocket_x == j && rocket_y == k && !map->GetMap()[j][k]->IsEmpty()) {
+					map->GetMap()[j][k]->SetEmpty();
+					active_rockets.erase(active_rockets.begin() + i);
+					j = map->GetMap().size();
+					k = map->GetMap()[0].size();
 					delete current;
 				}
 			}
@@ -258,16 +245,22 @@ void ofApp::CheckForWinner()
 {
 	bool player1_on_ship = false;
 	bool player2_on_ship = false;
+	int x1 = player1->GetPlayerBlock()->GetXArray();
+	int y1 = player1->GetPlayerBlock()->GetYArray();
+	int x2 = player2->GetPlayerBlock()->GetXArray();
+	int y2 = player2->GetPlayerBlock()->GetYArray();
 	for (int i = 0; i < map->GetMap().size(); i++) {
 		for (int j = 0; j < map->GetMap()[0].size(); j++) {
-			if (!player1_on_ship && !map->GetMap()[i][j]->IsEmpty() && player1_rect.intersects(map->GetMap()[i][j]->GetRectangle())) {
+			if (!player1_on_ship && !map->GetMap()[i][j]->IsEmpty() && x1 == i && y1 == j) {
 				player1_on_ship = true;
 			}
-			if (!player2_on_ship && !map->GetMap()[i][j]->IsEmpty() && player2_rect.intersects(map->GetMap()[i][j]->GetRectangle())) {
+			if (!player2_on_ship && !map->GetMap()[i][j]->IsEmpty() && x2 == i && y2 ==j) {
 				player2_on_ship = true;
 			}
 		}
 	}
+	//player2_won == !player1_on_ship;
+	//player1_won == !player2_on_ship;
 	if (!player1_on_ship) { //clean up
 		player2_won = true;
 	}

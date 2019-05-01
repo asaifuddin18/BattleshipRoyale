@@ -14,6 +14,9 @@ public:
 	ofRectangle GetRectangle();
 	bool IsEmpty();
 	void SetEmpty();
+	void Reposition(int set_x, int set_y);
+	int GetXArray();
+	int GetYArray();
 private:
 	ofRectangle rect;
 	int height;

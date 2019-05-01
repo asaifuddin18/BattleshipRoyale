@@ -3,8 +3,8 @@
 #include "block.h"
 class player {
 public:
+	player(float x, float y, int set_id, int R, int G, int B);
 	void SetPosition(float x, float y);
-	void SetSize(float w, float h);
 	float GetWidth();
 	float GetHeight();
 	float GetXPos();
@@ -12,12 +12,13 @@ public:
 	int GetInventorySize();
 	void AddItem();
 	void RemoveItem();
-	void SetColor(std::string color);
 	std::vector<int> GetColor();
 	void SetId(int new_id);
 	int GetId();
 	void UpdatePlayer();
+	Block* GetPlayerBlock();
 private:
+	Block *player_block;
 	int inventory = 0;
 	static const int kMaxInventorySize = 5;
 	float width;

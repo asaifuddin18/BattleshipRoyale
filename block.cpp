@@ -91,3 +91,20 @@ void Block::SetEmpty()
 {
 	empty = true;
 }
+
+void Block::Reposition(int set_x, int set_y)
+{
+	array_x = set_x;
+	array_y = set_y;
+	Resize();
+}
+
+int Block::GetXArray()
+{
+	return array_x;
+}
+
+int Block::GetYArray()
+{
+	return array_y;
+}

@@ -2,54 +2,36 @@
 #include <vector>;
 #include "ofApp.h";
 
-void player::SetPosition(float x, float y)
+player::player(float x, float y, int set_id, int R, int G, int B)
 {
-	float block_width = ofGetWindowWidth() / 60;
-	float block_height = ofGetWindowHeight() / 35;
-	if (x > ofGetWindowWidth() - block_width) {
-		x_pos = ofGetWindowWidth() - block_width;
-	}
-	else if (x < 0) {
-		x_pos = 0;
-	}
-	else {
-		x_pos = x;
-	}
-	if (y > ofGetWindowHeight() - block_height) {
-		y_pos = ofGetWindowHeight() - block_height;
-	}
-	else if (y < 0) {
-		y_pos = 0;
-	}
-	else {
-		y_pos = y;
-	}
+	player_block = new Block(R, G, B, x, y);
+	id = set_id;
+
 }
 
-void player::SetSize(float w, float h)
+void player::SetPosition(float x, float y) //keep updating player class
 {
-	width = w;
-	height = h;
+	player_block->Reposition(x, y);
 }
 
 float player::GetWidth()
 {
-	return width;
+	return player_block->GetWidth();
 }
 
 float player::GetHeight()
 {
-	return height;
+	return player_block->GetHeight();
 }
 
 float player::GetXPos()
 {
-	return x_pos;
+	return player_block->GetX();
 }
 
 float player::GetYPos()
 {
-	return y_pos;
+	return player_block->GetY();
 }
 
 int player::GetInventorySize()
@@ -65,20 +47,6 @@ void player::AddItem()
 void player::RemoveItem()
 {
 	inventory--;
-}
-
-void player::SetColor(std::string color)
-{
-	if (color == "RED") {
-		R = 255;
-		G = 0;
-		B = 0;
-	}
-	else {
-		R = 0;
-		G = 255;
-		B = 0;
-	}
 }
 
 std::vector<int> player::GetColor()
@@ -102,10 +70,11 @@ int player::GetId()
 
 void player::UpdatePlayer()
 {
-	float temp_width = ofGetWindowWidth() / 60;
-	float temp_height = ofGetWindowHeight() / 35;
-	x_pos = (x_pos / width) * temp_width;
-	y_pos = (y_pos / height) * temp_height;
-	width = temp_width;
-	height = temp_height;
+	player_block->Resize();
 }
+
+Block * player::GetPlayerBlock()
+{
+	return player_block;
+}
+

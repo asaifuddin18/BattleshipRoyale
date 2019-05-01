@@ -1,28 +1,32 @@
 #include "rocket.h"
 #include <iostream>
 
-rocket::rocket(player player)
+rocket::rocket(player* player)
 {
-	width = player.GetWidth();
-	height = player.GetHeight();
-	x_pos = player.GetXPos();
-	y_pos = player.GetYPos();
-	velocity = player.GetHeight() / 2;
+	x_pos = player->GetPlayerBlock()->GetXArray();
+	y_pos = player->GetPlayerBlock()->GetYArray();
+	std::cout << player->GetId() << " ID" << std::endl;
+	if (player->GetId() == 1) {
+		velocity = 1;
+	}
+	else {
+		velocity = -1;
+	}
 	//acceleration = height / 20;
 	acceleration = 0;
 	//acceleration disabled
-	if (player.GetId() == 1) {
-		y_pos += height;
+	if (player->GetId() == 1) {
+		y_pos += 1;
 		//acceleration = height / 20;
 	}
 	else {
-		y_pos -= height;
+		y_pos -= 1;
 		//acceleration = -(height / 20);
 	}
-	red = player.GetColor()[0] / 2;
-	green = player.GetColor()[1] / 2;
-	blue = player.GetColor()[2] / 2;
-	rect = ofRectangle(x_pos, y_pos, width, height);
+	red = player->GetColor()[0] / 2;
+	green = player->GetColor()[1] / 2;
+	blue = player->GetColor()[2] / 2;
+	rocket_block = new Block(100, 100, 100, x_pos, y_pos);
 
 }
 
@@ -76,10 +80,10 @@ std::vector<int> rocket::GetColor()
 
 void rocket::Update()
 {
-	SpeedUp();
+	//SpeedUp();
 	UpdatePosition();
 	//std::cout << "X " << x_pos << " Y " << y_pos << std::endl;
-	rect = ofRectangle(x_pos, y_pos, width, height);
+	rocket_block->Reposition(x_pos, y_pos);
 }
 
 float rocket::GetWidth()
@@ -108,6 +112,11 @@ ofRectangle rocket::GetRectangle()
 	return rect;
 }
 
+Block * rocket::GetBlock()
+{
+	return rocket_block;
+}
+
 void rocket::SpeedUp()
 {
 	velocity += acceleration;
@@ -115,9 +124,10 @@ void rocket::SpeedUp()
 
 void rocket::UpdatePosition()
 {
-	//std::cout << y_pos << " BEFORE" << std::endl;
+	std::cout << velocity << " VELOCITY" << std::endl;
+	std::cout << y_pos << " BEFORE" << std::endl;
 	y_pos += velocity;
-	//std::cout << y_pos << " AFTER" << std::endl;
+	std::cout << y_pos << " AFTER" << std::endl;
 }
 
 
