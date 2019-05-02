@@ -282,9 +282,7 @@ void ofApp::CheckForWinner()
 			}
 		}
 	}
-	//player2_won == !player1_on_ship;
-	//player1_won == !player2_on_ship;
-	if (!player1_on_ship) { //clean up
+	if (!player1_on_ship) {
 		player2_won = true;
 	}
 	else if (!player2_on_ship) {
