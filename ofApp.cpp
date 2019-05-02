@@ -10,7 +10,7 @@ void ofApp::setup(){
 	victory.load("victory.mp3");
 	victory.setVolume(.5);
 	player1 = new Player(max_x / 2, 0, player1_id, max_color, no_color, no_color);
-	player2 = new Player(max_x / 2, max_y - 2, player2_id, no_color, max_color, no_color);
+	player2 = new Player(max_x / 2, max_y - 1, player2_id, no_color, max_color, no_color);
 	ofSetBackgroundColor(no_color, 102, 204);
 	map = new Map("shipbattle.txt");
 }
@@ -318,11 +318,11 @@ void ofApp::DrawWinningText()
 
 void ofApp::GenerateAmmo()
 {
-	int odds = rand() % 15;
+	int odds = rand() % 17;
 	int ammo_x = rand() % max_x;
 	int ammo_y = rand() % max_y;
 	if (odds == 4 && !map->GetMap()[ammo_x][ammo_y]->IsEmpty()) {
-		Block *new_ammo = new Block(no_color, no_color, no_color, ammo_x, ammo_y);
+		Block *new_ammo = new Block(max_color, max_color / 2, no_color, ammo_x, ammo_y);
 		ammo.push_back(new_ammo);
 	}
 
