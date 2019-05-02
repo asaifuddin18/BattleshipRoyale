@@ -38,4 +38,13 @@ Problems:
 Still need to figure out how to read 2 inputs at the same time.
 -------------------------------------------------------------------------------------
 Log 4
-Fixed Map Loader.
+Fixed Map Loader to properly compile.
+Map loader now uses key to determine block colors.
+Added test cases for Block, Player, Map, and Rocket classes.
+Added ammo system: ammo spawns randomly on players ships. Players can only hold 5 ammo at a time.
+Changed the player tracking system to rely on map double array instead of OfRectangle class.
+Removed magic numbers with constants.
+Added sound effects to rocket fire, rocket hit, and game win.
+Removed rocket acceleration and reflect:
+Acceleration does not properly work with Map double array system.
+Rocket reflect can cause a scenerio which players keep reflecting and game is in a stand still state.

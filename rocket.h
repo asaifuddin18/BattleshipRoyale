@@ -2,6 +2,7 @@
 #include <vector>
 #include "player.h"
 #include "ofGraphics.h"
+#include "ofSoundPlayer.h"
 class Rocket {
 public:
 	Rocket(Player* player);
@@ -18,6 +19,10 @@ public:
 	float GetVelocity();
 	Block* GetBlock();
 private:
+	int red_index = 0;
+	int green_index = 1;
+	int blue_index = 2;
+	ofSoundPlayer rocket_hit;
 	Block* rocket_block;
 	float width;
 	float height;

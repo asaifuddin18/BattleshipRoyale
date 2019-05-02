@@ -5,6 +5,7 @@
 #include "player.h"
 #include "map.h"
 #include <vector>
+#include "ofSoundPlayer.h"
 
 class ofApp : public ofBaseApp{
 
@@ -25,6 +26,19 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 private:
+	int player1_id = 1;
+	int player2_id = 2;
+	int no_color = 0;
+	int red_index = 0;
+	int green_index = 1;
+	int blue_index = 2;
+	int max_color = 255;
+	int max_x = 60;
+	int max_y = 35;
+	bool victorySoundPlayed = false;
+	ofSoundPlayer rocket_hit;
+	ofSoundPlayer rocket_fire;
+	ofSoundPlayer victory;
 	bool first_move = false;
 	bool player2_won = false;
 	bool player1_won = false;
@@ -45,4 +59,5 @@ private:
 	void GenerateAmmo();
 	void CheckForAmmoPickUp();
 	void DrawAmmo();
+	void DrawAmmoCount();
 };

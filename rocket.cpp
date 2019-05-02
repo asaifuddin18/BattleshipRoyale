@@ -17,9 +17,9 @@ Rocket::Rocket(Player* player)
 	else {
 		y_pos -= 1;
 	}
-	red = player->GetColor()[0] / 2;
-	green = player->GetColor()[1] / 2;
-	blue = player->GetColor()[2] / 2;
+	red = player->GetColor()[red_index] / 2;
+	green = player->GetColor()[green_index] / 2;
+	blue = player->GetColor()[blue_index] / 2;
 
 	rocket_block = new Block(red, green, blue, x_pos, y_pos);
 
@@ -61,10 +61,7 @@ void Rocket::SetColor(int R, int G, int B)
 
 std::vector<int> Rocket::GetColor()
 {
-	std::vector<int> colors;
-	colors.push_back(red);
-	colors.push_back(green);
-	colors.push_back(blue);
+	std::vector<int> colors = { red, green, blue };
 	return colors;
 }
 

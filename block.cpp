@@ -29,10 +29,10 @@ Block::Block()
 
 void Block::Resize()
 {
-	int rect_x = (x) * (ofGetWindowWidth() / 60);
-	int rect_y = (y) * (ofGetWindowHeight() / 35);
-	width = ofGetWindowWidth() / 60;
-	height = ofGetWindowHeight() / 35;
+	int rect_x = (x) * (ofGetWindowWidth() / max_x);
+	int rect_y = (y) * (ofGetWindowHeight() / max_y);
+	width = ofGetWindowWidth() / max_x;
+	height = ofGetWindowHeight() / max_y;
 	rect = ofRectangle(rect_x, rect_y, width, height);
 }
 
@@ -73,8 +73,8 @@ void Block::SetEmpty()
 
 void Block::Reposition(int set_x, int set_y)
 {
-	if (set_x > 60) {
-		x = 60;
+	if (set_x > max_x) {
+		x = max_x;
 	}
 	else if (set_x < 0) {
 		x = 0;
@@ -82,8 +82,8 @@ void Block::Reposition(int set_x, int set_y)
 	else {
 		x = set_x;
 	}
-	if (set_y > 35) {
-		y = 35;
+	if (set_y > max_y) {
+		y = max_y;
 	}
 	else if (set_y < 0) {
 		y = 0;

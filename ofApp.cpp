@@ -3,9 +3,15 @@
 #include<vector>
 //--------------------------------------------------------------
 void ofApp::setup(){
-	player1 = new Player(30, 0, 1, 255, 0, 0);
-	player2 = new Player(30, 33, 2, 0, 255, 0);
-	ofSetBackgroundColor(0, 102, 204);
+	rocket_hit.load("rocket_hit.mp3");
+	rocket_hit.setVolume(.5);
+	rocket_fire.load("rocket_fire.mp3");
+	rocket_fire.setVolume(.5);
+	victory.load("victory.mp3");
+	victory.setVolume(.5);
+	player1 = new Player(max_x / 2, 0, player1_id, max_color, no_color, no_color);
+	player2 = new Player(max_x / 2, max_y - 2, player2_id, no_color, max_color, no_color);
+	ofSetBackgroundColor(no_color, 102, 204);
 	map = new Map("shipbattle.txt");
 }
 
@@ -31,6 +37,7 @@ void ofApp::draw(){
 	DrawPlayer1();
 	DrawPlayer2();
 	DrawRockets();
+	DrawAmmoCount();
 }
 
 //--------------------------------------------------------------
@@ -71,6 +78,7 @@ void ofApp::keyPressed(int key){
 			Rocket* new_rocket = new Rocket(player2);
 			active_rockets.push_back(new_rocket);
 			player2->RemoveItem();
+			rocket_fire.play();
 		}
 	}
 	char letter =  toupper(key);
@@ -104,6 +112,7 @@ void ofApp::keyPressed(int key){
 			Rocket* new_rocket = new Rocket(player1);
 			active_rockets.push_back(new_rocket);
 			player1->RemoveItem();
+			rocket_fire.play();
 		}
 	}
 }
@@ -126,6 +135,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
 
+
 }
 
 //--------------------------------------------------------------
@@ -146,10 +156,13 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
 	ResizeMap();
+	for (Block* current : ammo) {
+		current->Resize();
+	}
 	player1->UpdatePlayer();
 	player2->UpdatePlayer();
 	for (Rocket* current : active_rockets) {
-		current->SetSize(w / 60, h / 35);
+		current->SetSize(w / max_x, h / max_y);
 	}
 }
 
@@ -161,7 +174,7 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::DrawPlayer1()
 {
 	std::vector<int> colors = player1->GetPlayerBlock()->GetColor();
-	ofSetColor(colors[0], colors[1], colors[2]);
+	ofSetColor(colors[red_index], colors[green_index], colors[blue_index]);
 	ofFill();
 	ofDrawRectangle(player1->GetPlayerBlock()->GetRectangle());
 }
@@ -169,7 +182,7 @@ void ofApp::DrawPlayer1()
 void ofApp::DrawPlayer2()
 {
 	std::vector<int> colors = player2->GetPlayerBlock()->GetColor();
-	ofSetColor(colors[0], colors[1], colors[2]);
+	ofSetColor(colors[red_index], colors[green_index], colors[blue_index]);
 	ofFill();
 	ofDrawRectangle(player2->GetPlayerBlock()->GetRectangle());
 }
@@ -178,12 +191,12 @@ void ofApp::DrawRockets()
 {
 	for (int i = 0; i < active_rockets.size(); i++) {
 		Rocket* rocket = active_rockets[i];
-		if (rocket->GetY() < 0 || rocket->GetY() > 35) {
+		if (rocket->GetY() < 0 || rocket->GetY() > max_y) {
 			active_rockets.erase(active_rockets.begin() + i);
 			delete rocket;
 			continue;
 		}
-		ofSetColor(0, 0, 255);
+		ofSetColor(no_color, no_color, max_color);
 		ofFill();
 		ofDrawRectangle(rocket->GetBlock()->GetRectangle());
 		rocket->Update();
@@ -197,7 +210,7 @@ void ofApp::DrawMap()
 			ofFill();
 			if (!map->GetMap()[j][i]->IsEmpty()) {
 				std::vector<int> colors = map->GetMap()[j][i]->GetColor();
-				ofSetColor(colors[0], colors[1], colors[2]);
+				ofSetColor(colors[red_index], colors[green_index], colors[blue_index]);
 				ofDrawRectangle(map->GetMap()[j][i]->GetRectangle());
 			}
 		}
@@ -237,8 +250,9 @@ void ofApp::CheckForRocketCollision()
 		int rocket_x = current->GetX();
 		int rocket_y = current->GetY();
 		for (int j = 0; j < map->GetMap().size(); j++) {
-			for (int k = 0; k < map->GetMap().size(); k++) {
+			for (int k = 0; k < map->GetMap()[0].size(); k++) {
 				if (rocket_x == j && rocket_y == k && !map->GetMap()[j][k]->IsEmpty()) {
+					rocket_hit.play();
 					map->GetMap()[j][k]->SetEmpty();
 					active_rockets.erase(active_rockets.begin() + i);
 					j = map->GetMap().size();
@@ -280,21 +294,35 @@ void ofApp::CheckForWinner()
 
 void ofApp::DrawWinningText()
 {
+	if (!victorySoundPlayed) {
+		victorySoundPlayed = true;
+		victory.play();
+	}
+	ofTrueTypeFont* player = new ofTrueTypeFont();
+	int font = ofGetWindowWidth() / 40;
+	ofSetColor(max_color, max_color / 2, no_color);
+	player->loadFont("customfont.ttf", font);
+	if (player1_won && player2_won) { //tie case
+		player->drawString("Tie!", (ofGetWindowWidth() / 2) - player->getSize() * 4, (ofGetWindowHeight() / 2));
+		return;
+	}
 	if (player1_won) {
-		ofDrawBitmapString("Player 1 Won!", 100, 100);
+		player->drawString("Player 1 Won!", (ofGetWindowWidth() / 2) - player->getSize() * 4, (ofGetWindowHeight() / 2));
 	}
 	else if (player2_won) {
-		ofDrawBitmapString("Player 2 Won!", 100, 100);
+		player->drawString("Player 2 Won!", (ofGetWindowWidth() / 2) - player->getSize() * 4, (ofGetWindowHeight() / 2));
 	}
+	delete player;
+
 }
 
 void ofApp::GenerateAmmo()
 {
 	int odds = rand() % 15;
-	int ammo_x = rand() % 60;
-	int ammo_y = rand() % 35;
+	int ammo_x = rand() % max_x;
+	int ammo_y = rand() % max_y;
 	if (odds == 4 && !map->GetMap()[ammo_x][ammo_y]->IsEmpty()) {
-		Block *new_ammo = new Block(0, 0, 0, ammo_x, ammo_y);
+		Block *new_ammo = new Block(no_color, no_color, no_color, ammo_x, ammo_y);
 		ammo.push_back(new_ammo);
 	}
 
@@ -323,9 +351,18 @@ void ofApp::DrawAmmo()
 {
 	for (Block* current : ammo) {
 		std::vector<int> colors = current->GetColor();
-		ofSetColor(colors[0], colors[1], colors[2]);
+		ofSetColor(colors[red_index], colors[green_index], colors[blue_index]);
 		ofDrawRectangle(current->GetRectangle());
 	}
+}
+void ofApp::DrawAmmoCount()
+{
+	ofTrueTypeFont* player = new ofTrueTypeFont();
+	ofSetColor(max_color, max_color / 2, no_color);
+	player->loadFont("customfont.ttf", ofGetWindowWidth() / max_x);
+	player->drawString(std::to_string(player1->GetInventorySize()), ofGetWindowWidth() - (ofGetWindowWidth() / max_x), (ofGetWindowHeight() / max_y));
+	player->drawString(std::to_string(player2->GetInventorySize()), ofGetWindowWidth() - (ofGetWindowWidth() / max_x), ofGetWindowHeight() - (ofGetWindowHeight() / max_y));
+	delete player;
 }
 
 //--------------------------------------------------------------

@@ -4,7 +4,6 @@
 Map::Map(std::string file_name)
 {
 	bool reading_key = true;
-	std::cout << file_name;
 	std::ifstream map_file(file_name);
 	std::string current_line;
 	int y = 0;
@@ -15,11 +14,11 @@ Map::Map(std::string file_name)
 				reading_key = false;
 				continue;
 			}
-			char tile_name = current_line.at(0);
+			char tile_name = current_line.at(index_of_key_char);
 			std::vector<int> colors;
-			colors.push_back(std::stoi(current_line.substr(4, 3)));
-			colors.push_back(std::stoi(current_line.substr(7, 3)));
-			colors.push_back(std::stoi(current_line.substr(10)));
+			colors.push_back(std::stoi(current_line.substr(red_substring, length_of_substring)));
+			colors.push_back(std::stoi(current_line.substr(green_sibstring, length_of_substring)));
+			colors.push_back(std::stoi(current_line.substr(blue_substring)));
 			color_key[tile_name] = colors;
 			continue;
 		}
@@ -27,7 +26,7 @@ Map::Map(std::string file_name)
 			char tile = current_line.at(i);
 			if (color_key.find(tile) != color_key.end()) {
 				std::vector<int> colors = color_key[tile];
-				map_array[i][y] = new Block(colors[0], colors[1], colors[2], i, y);
+				map_array[i][y] = new Block(colors[red_index], colors[green_index], colors[blue_index], i, y);
 			}
 			else {
 				Block* new_tile;

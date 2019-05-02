@@ -16,6 +16,8 @@ public:
 	int GetX();
 	int GetY();
 private:
+	int max_x = 60;
+	int max_y = 35;
 	ofRectangle rect;
 	int height;
 	int width;
