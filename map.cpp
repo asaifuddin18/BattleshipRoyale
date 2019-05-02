@@ -1,6 +1,13 @@
 #include "map.h"
 #include <iostream>
-
+/*
+Map uses the following format
+CHAR = ######### (#'s are RGB colors values and CHAR is a character e.g. B).
+Each character will have a block color.
+At the end of declaring char's, "MAP" must be written on a single line afterwords
+After Map, a 60X35 array of characters must be written.
+Any characters not listed before MAP will be counted as empty spaces.
+*/
 Map::Map(std::string file_name)
 {
 	bool reading_key = true;
